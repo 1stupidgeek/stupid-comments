@@ -57,7 +57,7 @@ async def post(req: ChatRequest):
                 # theres no new comment, handle replies in future
             else:
                 # reply with a new comment
-                print(f"""Handling New Comment {comment_text}""")
+                print(f"""Comment: {comment_text}""")
                 
                 #
                 prompt = f"""
@@ -85,10 +85,10 @@ Reply:
                     print(data)
                     continue
                 
-                print(data["response"])
+                print(f"""Reply: {data["response"]}""")
                 
                 postResponse = postComment(comment_id, data["response"])
-                print(postResponse)
+                # print(postResponse)
 
                 comment_response = [comment, postResponse];
 
@@ -99,7 +99,7 @@ Reply:
                     "reply": data["response"]
                 })
         return {
-            "results": results
+            "handled": any("reply" in r for r in results)
         }
 
 @app.get("/get")
